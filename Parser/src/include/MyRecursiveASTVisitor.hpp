@@ -437,7 +437,7 @@ public:
    */
   bool VisitUsingDecl(clang::UsingDecl *p_decl)
   {
-    operands["using"] += 1;
+    operators["using"] += 1;
     operands[p_decl->getQualifiedNameAsString()] += 1;
 
     return true;
@@ -445,8 +445,8 @@ public:
 
   bool VisitUsingDirectiveDecl(clang::UsingDirectiveDecl *p_decl)
   {
-    operands["using"] += 1;
-    operands["namespace"] += 1;
+    operators["using"] += 1;
+    operators["namespace"] += 1;
     operands[p_decl->getNominatedNamespace()->getNameAsString()] += 1;
 
     return true;
@@ -457,7 +457,7 @@ public:
    */
   bool VisitTypeAliasDecl(clang::TypeAliasDecl *p_decl)
   {
-    operands["using"] += 1;
+    operators["using"] += 1;
     operands[p_decl->getNameAsString()] += 1;
     operators["="] += 1;
     operands[p_decl->getUnderlyingType().getAsString()] += 1;
