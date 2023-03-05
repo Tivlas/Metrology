@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <vector>
 #include <QFileDialog>
 #include "../include/metrics-calculator.h"
 
@@ -27,5 +28,7 @@ private slots:
 private:
     Ui::Widget *ui;
     ParserHalstead parser;
+    int num_of_operators_rows = 0;
+    int num_of_operands_rows = 0;
 };
 #endif

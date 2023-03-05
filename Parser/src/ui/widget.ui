@@ -29,9 +29,8 @@
        <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
       <property name="columnCount">
-       <number>3</number>
+       <number>2</number>
       </property>
-      <column/>
       <column/>
       <column/>
      </widget>
@@ -39,12 +38,11 @@
     <item>
      <widget class="QTableWidget" name="operatorsTable">
       <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
+       <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
       </property>
       <property name="columnCount">
-       <number>3</number>
+       <number>2</number>
       </property>
-      <column/>
       <column/>
       <column/>
      </widget>

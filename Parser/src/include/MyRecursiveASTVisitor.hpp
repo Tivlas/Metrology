@@ -57,16 +57,16 @@ public:
       switch (p_decl->getTagKind())
       {
       case clang::TTK_Struct:
-        operands["struct"] += 1;
+        operators["struct"] += 1;
         break;
       case clang::TTK_Class:
-        operands["class"] += 1;
+        operators["class"] += 1;
         break;
       case clang::TTK_Enum:
-        operands["enum"] += 1;
+        operators["enum"] += 1;
         break;
       case clang::TTK_Union:
-        operands["union"] += 1;
+        operators["union"] += 1;
         break;
       default:
         break;
@@ -85,7 +85,7 @@ public:
         // If virtual ancestor then add "virtual" keyword as operand.
         if (base.isVirtual())
         {
-          operands["virtual"] += 1;
+          operators["virtual"] += 1;
         }
 
         // Add ancestor access specifier as an operand.
@@ -94,20 +94,20 @@ public:
         switch (base.getAccessSpecifier())
         {
         case clang::AS_public:
-          operands["public"] += 1;
+          operators["public"] += 1;
           break;
         case clang::AS_protected:
-          operands["protected"] += 1;
+          operators["protected"] += 1;
           break;
         case clang::AS_private:
-          operands["private"] += 1;
+          operators["private"] += 1;
           break;
         default:
           break;
         }
 
         std::string str = base.getType().getAsString();
-        operands[str.substr(str.find(' ') + 1)] += 1;
+        operators[str.substr(str.find(' ') + 1)] += 1;
       }
     }
 
@@ -121,11 +121,11 @@ public:
   {
     if (p_decl->isConst())
     {
-      operands["const"] += 1;
+      operators["const"] += 1;
     }
     if (p_decl->isVolatile())
     {
-      operands["volatile"] += 1;
+      operators["volatile"] += 1;
     }
 
     return true;
@@ -164,14 +164,14 @@ public:
     // static C
     if (p_decl->isModulePrivate())
     {
-      operands["static"] += 1;
+      operators["static"] += 1;
     }
 
     // static C++
     switch (p_decl->getStorageClass())
     {
     case clang::SC_Static:
-      operands["static"] += 1;
+      operators["static"] += 1;
       break;
     default:
       break;
@@ -182,11 +182,11 @@ public:
     // type name.
     if (p_decl->getType().getTypePtr()->getContainedAutoType())
     {
-      operands["auto"] += 1;
+      operators["auto"] += 1;
     }
     else
     {
-      operands[p_decl->getType().getAsString()] += 1;
+      operators[p_decl->getType().getAsString()] += 1;
     }
 
     // type var = init ?
@@ -206,13 +206,13 @@ public:
     switch (p_decl->getAccess())
     {
     case clang::AS_public:
-      operands["public"] += 1;
+      operators["public"] += 1;
       break;
     case clang::AS_protected:
-      operands["protected"] += 1;
+      operators["protected"] += 1;
       break;
     case clang::AS_private:
-      operands["private"] += 1;
+      operators["private"] += 1;
       break;
     default:
       break;
@@ -226,18 +226,18 @@ public:
    */
   bool VisitFunctionDecl(clang::FunctionDecl *p_decl)
   {
-    operands[p_decl->getNameAsString()] += 1;
+    operators[p_decl->getNameAsString()] += 1;
 
     // if not a constructor or a destructor then get the return type.
     if (!(clang::isa<clang::CXXConstructorDecl>(p_decl) || clang::isa<clang::CXXDestructorDecl>(p_decl)))
     {
-      operands[p_decl->getReturnType().getAsString()] += 1;
+      operators[p_decl->getReturnType().getAsString()] += 1;
     }
 
     // if not a method and not a global function then it is a static function.
     if (!(clang::isa<clang::CXXMethodDecl>(p_decl) || p_decl->isGlobal()))
     {
-      operands["static"] += 1;
+      operators["static"] += 1;
     }
 
     return true;
@@ -248,7 +248,7 @@ public:
    */
   bool VisitFieldDecl(clang::FieldDecl *p_decl)
   {
-    operands[p_decl->getType().getAsString()] += 1;
+    operators[p_decl->getType().getAsString()] += 1;
 
     operands[p_decl->getNameAsString()] += 1;
 
@@ -347,7 +347,7 @@ public:
   {
     if (auto callee = p_expr->getDirectCallee())
     {
-      operands[callee->getNameAsString()] += 1;
+      operators[callee->getNameAsString()] += 1;
       operators["()"] += 1;
     }
 
@@ -390,15 +390,15 @@ public:
     // template parameter is declared as typename or class.
     if (p_decl->wasDeclaredWithTypename())
     {
-      operands["typename"] += 1;
+      operators["typename"] += 1;
     }
     else
     {
-      operands["class"] += 1;
+      operators["class"] += 1;
     }
 
     // template parameter name.
-    operands[p_decl->getNameAsString()] += 1;
+    operators[p_decl->getNameAsString()] += 1;
 
     return true;
   }
@@ -408,7 +408,7 @@ public:
    */
   bool VisitFunctionTemplateDecl(clang::FunctionTemplateDecl *p_decl)
   {
-    operands["template"] += 1;
+    operators["template"] += 1;
     operators["<>"] += 1;
 
     return true;
@@ -471,7 +471,7 @@ public:
    */
   bool VisitTypeAliasTemplateDecl(clang::TypeAliasTemplateDecl *p_decl)
   {
-    operands["template"] += 1;
+    operators["template"] += 1;
 
     return 0;
   }
@@ -485,12 +485,12 @@ public:
    */
   bool VisitIfStmt(clang::IfStmt *p_stmt)
   {
-    operands["if"] += 1;
+    operators["if"] += 1;
     operators["()"] += 1;
 
     if (p_stmt->getElse())
     {
-      operands["else"] += 1;
+      operators["else"] += 1;
     }
 
     return true;
