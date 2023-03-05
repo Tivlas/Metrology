@@ -28,6 +28,8 @@ public:
   MyRecursiveASTVisitor(clang::ASTContext *p_astContext)
       : p_astContext(p_astContext)
   {
+    operators.clear();
+    operands.clear();
   }
 
   /**
@@ -144,8 +146,6 @@ public:
       operands["explicit"] += 1;
     }
 
-    // TODO: add ":" as operator ?
-
     // initializers
     for (auto const &init : p_decl->inits())
     {
@@ -239,7 +239,7 @@ public:
     {
       operators["static"] += 1;
     }
-
+    operators["()"] += 1;
     return true;
   }
 
@@ -283,14 +283,14 @@ public:
 
   bool VisitCharacterLiteral(clang::CharacterLiteral *p_lit)
   {
-    operands[std::to_string(p_lit->getValue())] += 1;
+    operands["\'" + std::to_string(p_lit->getValue()) + "\'"] += 1;
 
     return true;
   }
 
   bool VisitStringLiteral(clang::StringLiteral *p_lit)
   {
-    operands[p_lit->getString().str()] += 1;
+    operands["\"" + p_lit->getString().str() + "\""] += 1;
 
     return true;
   }
@@ -348,12 +348,24 @@ public:
     if (auto callee = p_expr->getDirectCallee())
     {
       operators[callee->getNameAsString()] += 1;
-      operators["()"] += 1;
+      if (!(clang::isa<clang::CXXOperatorCallExpr>(p_expr)))
+      {
+        operators["()"] += 1;
+      }
     }
 
     return true;
   }
 
+  // bool VisitCXXOperatorCallExpr(clang::CXXOperatorCallExpr *p_expr)
+  // {
+  //   if (auto callee = p_expr->getDirectCallee())
+  //   {
+  //     operators[callee->getNameAsString()] += 1;
+  //   }
+
+  //   return true;
+  // }
   /**
    * OPERATORS
    */
@@ -375,6 +387,12 @@ public:
   {
     operators[clang::BinaryOperator::getOpcodeStr(p_op->getOpcode()).str()] += 1;
 
+    return true;
+  }
+
+  bool VisitConditionalOperator(clang::ConditionalOperator *p_cond)
+  {
+    operators["?:"]++;
     return true;
   }
 
@@ -527,6 +545,27 @@ public:
     operators["while"] += 1;
     operators["()"] += 1;
 
+    return true;
+  }
+
+  /**
+   * Switch
+   */
+
+  bool VisitSwitchStmt(clang::SwitchStmt *s_stmt)
+  {
+    operators["switch"] += 1;
+    operators["()"] += 1;
+    return true;
+  }
+
+  /**
+   * example ("1")
+   */
+
+  bool VisitParenExpr(clang::ParenExpr *p_expr)
+  {
+    operators["()"] += 1;
     return true;
   }
 
