@@ -17,9 +17,9 @@ class MyRecursiveASTVisitor : public clang::RecursiveASTVisitor<MyRecursiveASTVi
 {
 
 public:
-  static Map operators;
-  static Map operands;
-  static std::vector<std::string> sourcepathlist;
+  inline static Map operators;
+  inline static Map operands;
+  inline static std::vector<std::string> sourcepathlist;
 
 private:
   clang::ASTContext *p_astContext;
@@ -561,11 +561,5 @@ public:
     return true;
   }
 };
-
-Map MyRecursiveASTVisitor::operators;
-
-Map MyRecursiveASTVisitor::operands;
-
-std::vector<std::string> MyRecursiveASTVisitor::sourcepathlist;
 
 #endif
