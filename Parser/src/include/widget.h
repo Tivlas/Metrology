@@ -21,6 +21,7 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
     void ParseAndDisplay(int argc, char const *argv[]);
+    void Reset();
 
 private slots:
     void on_chooseFileBtn_clicked();
