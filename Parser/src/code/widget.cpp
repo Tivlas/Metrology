@@ -101,6 +101,18 @@ void Widget::on_chooseFileBtn_clicked()
 {
     Reset();
     std::string file_name = QFileDialog::getOpenFileName(this, "Выберите файл", "/home/timofey/Uni/BSUIR/Metrology/Task1", "Available extensions (*.cpp)").toStdString();
+
+    QProcess process;
+    process.setWorkingDirectory("/home/timofey/Uni/BSUIR/Metrology/Task1");
+    process.start("g++", QStringList() << QString::fromStdString(file_name));
+    process.waitForFinished(5000);
+
+    if (process.exitCode() == 1)
+    {
+        QMessageBox::warning(this, "ERROR", "File is corrupted and cannot be compiled!");
+        return;
+    }
+
     char const *argv[6];
     argv[0] = std::string("./Parser").c_str();
     argv[1] = file_name.c_str();

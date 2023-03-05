@@ -5,6 +5,8 @@
 #include <vector>
 #include <QFileDialog>
 #include "../include/metrics-calculator.h"
+#include <QProcess>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
