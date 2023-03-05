@@ -71,6 +71,8 @@ void Widget::ParseAndDisplay(int argc, char const *argv[])
 
     ui->operandsTable->resizeColumnsToContents();
     ui->operatorsTable->resizeColumnsToContents();
+    ui->operatorsTable->horizontalHeader()->setStretchLastSection(true);
+    ui->operandsTable->horizontalHeader()->setStretchLastSection(true);
 
     ui->progDictLabel->setText(QString("Словарь программы n = " + QString::number(n1) + " + " + QString::number(n2) + " = " + QString::number(n)));
     ui->progLengthLabel->setText(QString("Длина программы N = " + QString::number(N1) + " + " + QString::number(N2) + " = " + QString::number(N)));
@@ -83,12 +85,13 @@ void Widget::Reset()
     ui->operandsTable->clear();
     num_of_operands_rows = 0;
     num_of_operators_rows = 0;
-    ui->operatorsTable->setHorizontalHeaderLabels(QStringList()
-                                                  << "Оператор"
-                                                  << "f1j");
-    ui->operandsTable->setHorizontalHeaderLabels(QStringList()
-                                                 << "Операнд"
-                                                 << "f2i");
+    ui->operatorsTable->setHorizontalHeaderLabels(QStringList() << "j"
+                                                                << "Оператор"
+                                                                << "f1j");
+    ui->operandsTable->setHorizontalHeaderLabels(QStringList() << "i"
+                                                               << "Операнд"
+                                                               << "f2i");
+
     ui->progDictLabel->clear();
     ui->progLengthLabel->clear();
     ui->progVolumelabel->clear();
