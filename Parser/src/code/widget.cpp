@@ -103,9 +103,8 @@ void Widget::on_chooseFileBtn_clicked()
     std::string file_name = QFileDialog::getOpenFileName(this, "Выберите файл", "/home/timofey/Uni/BSUIR/Metrology/Task1", "Available extensions (*.cpp)").toStdString();
 
     QProcess process;
-    process.setWorkingDirectory("/home/timofey/Uni/BSUIR/Metrology/Task1");
     process.start("g++", QStringList() << QString::fromStdString(file_name));
-    process.waitForFinished(5000);
+    process.waitForFinished();
 
     if (process.exitCode() == 1)
     {
