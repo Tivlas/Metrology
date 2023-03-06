@@ -24,13 +24,29 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::ParseAndDisplay(int argc, char const *argv[])
+void Widget::ParseAndDisplay(int argc, char const *argv[], QString code)
 {
 
     std::vector<std::pair<std::string, int>> operators;
     std::vector<std::pair<std::string, int>> operands;
     int n1, n2, N1, N2, n, N, V;
     std::tie(operators, operands, n1, n2, N1, N2, n, N, V) = parser.parse(argc, argv);
+
+    std::string _code = code.toStdString();
+    int semicolon_count = std::count(_code.begin(), _code.end(), ';');
+    int brace_count = std::count(_code.begin(), _code.end(), '{');
+    if (semicolon_count)
+    {
+        operators.push_back(std::make_pair(";", semicolon_count));
+        n1++;
+        N1 += semicolon_count;
+    }
+    operators.push_back(std::make_pair("{}", brace_count));
+    n1++;
+    N1 += brace_count;
+    N = N1 + N2;
+    n = n1 + n2;
+    V = N * log2(n);
 
     for (const auto &i : operators)
     {
@@ -111,6 +127,10 @@ void Widget::on_chooseFileBtn_clicked()
         QMessageBox::warning(this, "ERROR", "File is corrupted and cannot be compiled!");
         return;
     }
+    QFile code_file(QString::fromStdString(file_name));
+    code_file.open(QIODevice::ReadOnly);
+    QString code = code_file.readAll();
+    code_file.close();
 
     char const *argv[6];
     argv[0] = std::string("./Parser").c_str();
@@ -119,5 +139,5 @@ void Widget::on_chooseFileBtn_clicked()
     argv[3] = std::string("-std=c++17").c_str();
     argv[4] = std::string("-isystem").c_str();
     argv[5] = std::string("/usr/include/clang/12/include").c_str();
-    ParseAndDisplay(6, argv);
+    ParseAndDisplay(6, argv, code);
 }

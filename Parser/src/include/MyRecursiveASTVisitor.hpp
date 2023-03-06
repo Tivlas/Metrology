@@ -365,11 +365,10 @@ public:
   bool VisitUnaryOperator(clang::UnaryOperator *p_op)
   {
     operators[clang::UnaryOperator::getOpcodeStr(p_op->getOpcode()).str()] += 1;
-
     return true;
   }
 
-  /**
+    /**
    * Binary operator.
    */
   bool VisitBinaryOperator(clang::BinaryOperator *p_op)

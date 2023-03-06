@@ -22,7 +22,7 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
-    void ParseAndDisplay(int argc, char const *argv[]);
+    void ParseAndDisplay(int argc, char const *argv[], QString);
     void Reset();
 
 private slots:
