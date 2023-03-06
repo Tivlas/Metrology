@@ -560,7 +560,43 @@ public:
   }
 
   /**
-   * example ("1")
+   * Case
+   */
+  bool VisitCaseStmt(clang::CaseStmt *c_stmt)
+  {
+    operators["case"] += 1;
+    return true;
+  }
+
+  /**
+   * Default
+   */
+  bool VisitDefaultStmt(clang::DefaultStmt *c_stmt)
+  {
+    operators["default"] += 1;
+    return true;
+  }
+
+  /**
+   * Break
+   */
+  bool VisitBreakStmt(clang::BreakStmt *b_stmt)
+  {
+    operators["break"] += 1;
+    return true;
+  }
+
+  /**
+   * Continue
+   */
+  bool VisitBreakStmt(clang::ContinueStmt *c_stmt)
+  {
+    operators["continue"] += 1;
+    return true;
+  }
+
+  /**
+   * represents a parethesized expression, example ("1")
    */
 
   bool VisitParenExpr(clang::ParenExpr *p_expr)
