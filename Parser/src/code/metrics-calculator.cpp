@@ -2,10 +2,8 @@
 
 return_type ParserHalstead::parse(int argc, char const *argv[])
 {
-  // Parse command line parameters.
   clang::tooling::CommonOptionsParser optionsParser(argc, argv, myToolCategory);
 
-  // Create a tool from parameters.
   clang::tooling::ClangTool tool(optionsParser.getCompilations(), optionsParser.getSourcePathList());
 
   MyRecursiveASTVisitor::sourcepathlist = optionsParser.getSourcePathList();

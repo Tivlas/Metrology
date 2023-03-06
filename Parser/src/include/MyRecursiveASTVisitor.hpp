@@ -150,7 +150,6 @@ public:
     for (auto const &init : p_decl->inits())
     {
       operands[init->getMember()->getNameAsString()] += 1;
-      operators["()"] += 1;
     }
 
     return true;
@@ -183,6 +182,10 @@ public:
     if (p_decl->getType().getTypePtr()->getContainedAutoType())
     {
       operators["auto"] += 1;
+    }
+    else if (p_decl->getType().getAsString() == "_Bool")
+    {
+      operators["bool"] += 1;
     }
     else
     {
@@ -239,7 +242,6 @@ public:
     {
       operators["static"] += 1;
     }
-    operators["()"] += 1;
     return true;
   }
 
@@ -283,7 +285,7 @@ public:
 
   bool VisitCharacterLiteral(clang::CharacterLiteral *p_lit)
   {
-    operands["\'" + std::to_string(p_lit->getValue()) + "\'"] += 1;
+    operands["\"" + std::to_string(p_lit->getValue()) + "\""] += 1;
 
     return true;
   }
@@ -348,24 +350,11 @@ public:
     if (auto callee = p_expr->getDirectCallee())
     {
       operators[callee->getNameAsString()] += 1;
-      if (!(clang::isa<clang::CXXOperatorCallExpr>(p_expr)))
-      {
-        operators["()"] += 1;
-      }
     }
 
     return true;
   }
 
-  // bool VisitCXXOperatorCallExpr(clang::CXXOperatorCallExpr *p_expr)
-  // {
-  //   if (auto callee = p_expr->getDirectCallee())
-  //   {
-  //     operators[callee->getNameAsString()] += 1;
-  //   }
-
-  //   return true;
-  // }
   /**
    * OPERATORS
    */
@@ -392,7 +381,7 @@ public:
 
   bool VisitConditionalOperator(clang::ConditionalOperator *p_cond)
   {
-    operators["?:"]++;
+    operators["?:"] += 1;
     return true;
   }
 
@@ -444,14 +433,7 @@ public:
   }
 
   /**
-   * USING
-   * TODO: detect the typename keyword in using declarations.
-   */
-
-  /**
    * using.
-   * TODO: getQualifiedNameAsString() does not return the type written
-   * by the developer but the one available once the using declaration is evaluated.
    */
   bool VisitUsingDecl(clang::UsingDecl *p_decl)
   {
@@ -485,7 +467,6 @@ public:
 
   /**
    * Template alias: "template < ... > using type< ... > = underlyingtype< ... >;"
-   * TODO: to be continued...
    */
   bool VisitTypeAliasTemplateDecl(clang::TypeAliasTemplateDecl *p_decl)
   {
@@ -504,7 +485,6 @@ public:
   bool VisitIfStmt(clang::IfStmt *p_stmt)
   {
     operators["if"] += 1;
-    operators["()"] += 1;
 
     if (p_stmt->getElse())
     {
@@ -520,7 +500,6 @@ public:
   bool VisitForStmt(clang::ForStmt *p_stmt)
   {
     operators["for"] += 1;
-    operators["()"] += 1;
 
     return true;
   }
@@ -531,7 +510,6 @@ public:
   bool VisitWhileStmt(clang::WhileStmt *p_stmt)
   {
     operators["while"] += 1;
-    operators["()"] += 1;
 
     return true;
   }
@@ -543,7 +521,6 @@ public:
   {
     operators["do"] += 1;
     operators["while"] += 1;
-    operators["()"] += 1;
 
     return true;
   }
@@ -555,7 +532,6 @@ public:
   bool VisitSwitchStmt(clang::SwitchStmt *s_stmt)
   {
     operators["switch"] += 1;
-    operators["()"] += 1;
     return true;
   }
 
@@ -611,7 +587,6 @@ public:
   bool VisitLambdaExpr(clang::LambdaExpr *p_expr)
   {
     operators["[]"] += 1;
-    operators["()"] += 1;
 
     if (p_expr->getCaptureDefault() == clang::LCD_ByRef)
     {
