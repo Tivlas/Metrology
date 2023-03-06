@@ -368,7 +368,7 @@ public:
     return true;
   }
 
-    /**
+  /**
    * Binary operator.
    */
   bool VisitBinaryOperator(clang::BinaryOperator *p_op)
@@ -567,6 +567,19 @@ public:
   bool VisitBreakStmt(clang::ContinueStmt *c_stmt)
   {
     operators["continue"] += 1;
+    return true;
+  }
+
+  bool VisitCXXDeleteExpr(clang::CXXDeleteExpr *d_expr)
+  {
+    if (d_expr->isArrayForm())
+    {
+      operators["delete[]"] += 1;
+    }
+    else
+    {
+      operators["delete"] += 1;
+    }
     return true;
   }
 
