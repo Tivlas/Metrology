@@ -18,15 +18,17 @@ void Widget::ParseAndDisplay(int argc, char const *argv[], QString code)
 
     unsigned long long CL, CLI;
     double cl;
-    std::tie(CL,cl,CLI) = parser.parse(argc, argv);
-    ui->CL_label->setText("Количество условных операторов:" + QString::number(CL));
-    ui->cl_label->setText("Насыщенность:" + QString::number(cl));
-    ui->CLI_label->setText("Максимальный уровень вложенности:" + QString::number(CLI));
+    std::tie(CL, cl, CLI) = parser.parse(argc, argv);
+    ui->CL_label->setText("Количество условных операторов: " + QString::number(CL));
+    ui->cl_label->setText("Насыщенность: " + QString::number(cl));
+    ui->CLI_label->setText("Максимальный уровень вложенности: " + QString::number(CLI));
 }
 
 void Widget::Reset()
 {
-    
+    ui->CL_label->clear();
+    ui->cl_label->clear();
+    ui->CLI_label->clear();
 }
 
 void Widget::on_chooseFileBtn_clicked()
