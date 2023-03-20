@@ -11,12 +11,12 @@ Widget::Widget(QWidget *parent)
     ui->operatorsTable->verticalHeader()->setVisible(false);
     ui->operandsTable->verticalHeader()->setVisible(false);
 
-    ui->operatorsTable->setHorizontalHeaderLabels(QStringList()
-                                                  << "Оператор"
-                                                  << "f1j");
-    ui->operandsTable->setHorizontalHeaderLabels(QStringList()
-                                                 << "Операнд"
-                                                 << "f2i");
+    ui->operatorsTable->setHorizontalHeaderLabels(QStringList() << "j"
+                                                                << "Оператор"
+                                                                << "f1j");
+    ui->operandsTable->setHorizontalHeaderLabels(QStringList() << "i"
+                                                               << "Операнд"
+                                                               << "f2i");
 }
 
 Widget::~Widget()
