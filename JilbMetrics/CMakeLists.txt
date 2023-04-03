@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("JilbMetrics" CXX) # Название проекта и язык
+project("JilbMetrics" C CXX) # Название проекта и язык
 
 
 # Стандарт C++
