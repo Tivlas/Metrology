@@ -34,7 +34,7 @@ void Widget::Reset()
 void Widget::on_chooseFileBtn_clicked()
 {
     Reset();
-    std::string file_name = QFileDialog::getOpenFileName(this, "Выберите файл", "/home/timofey/Uni/BSUIR/Metrology/Tasks/test_files", "Available extensions (*.cpp)").toStdString();
+    std::string file_name = QFileDialog::getOpenFileName(this, "Выберите файл", "/home/timofey/BSUIR/Metrology/JilbMetrics/test_files", "Available extensions (*.cpp)").toStdString();
 
     QProcess process;
     process.start("g++", QStringList() << QString::fromStdString(file_name));
