@@ -4,7 +4,7 @@
  - **sudo apt install -y libxkbcommon-dev libgl1-mesa-dev qt6-base-dev clang-12 libclang-12-dev cmake qtcreator**<br />
 
 Для удобства утсановите VS Code и там расширение CMake. Во вкладке расширения будут две кнопки (собрать и сконфигурировать), нажмите на любую и выберите clang-12 в появившемся списке предложенных компиляторов.
-В qtcreator будете менять интерфейс.
+В qtcreator по желанию измените интерфейс.
 Если лаба не собирается и вы не гений CMake, то удалите все версии clang и llvm кроме 12ой (у меня еще были 14ые):<br />
  - **sudo apt purge clang-14**<br />
  - **sudo apt purge llvm-14**<br />
