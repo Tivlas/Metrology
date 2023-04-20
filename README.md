@@ -1,4 +1,4 @@
-# Гайд по сборке (не на винде)
+# Гайд по сборке (Linux, Qt, c++)
 ---
 ## Выполните в терминале:
 **sudo apt install -y libxkbcommon-dev libgl1-mesa-dev qt6-base-dev clang-12 libclang-12-dev cmake qtcreator**<br />
